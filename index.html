@@ -25,11 +25,11 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-4 mt-3">
-                        <label for="campo">
-                            <h5>CAMPO</h5>
+                        <label for="busca">
+                            <h5>BUSCA</h5>
                         </label>
-                        <input type="text" class="form-control form-control-sm" id="campo" placeholder="|C170|" required
-                            disabled>
+                        <input type="text" class="form-control form-control-sm" id="busca" placeholder="51,52,53,54"
+                            required>
                     </div>
                     <div class="col-md-4 mt-3">
                         <label for="cfop">
@@ -85,13 +85,20 @@
             static verificaCampo(linha, campo) {
                 return linha.includes(campo);
             }
+
+            static confirmaPIS(linha, PIS) {
+                const search = PIS.filter((i)=>i==linha[25]);
+                return search > 1;
+            }
         }
 
         function alterarIcms(sped, filtro, cfop = 0, novoValor) {
+            const campo = "|C170|";
             return Sped.init(sped).map((i) => {
-                if (Sped.verificaCampo(i, filtro)) {
+                if (Sped.verificaCampo(i, campo)) {
                     let spedDividido = Sped.dividir(i);
                     if (Sped.verificarCFOP(cfop, spedDividido[11]) || cfop == 0) {
+                        if(Sped.confirmaPIS(spedDividido, filtro))
                         spedDividido = Sped.alterarPISCONFINS(spedDividido, novoValor);
 
                     }
@@ -124,11 +131,11 @@
             event.stopPropagation();
             event.preventDefault();
             const $sped = document.getElementById("sped").value;
-            const $campo = "|C170|";
+            const $busca = (document.getElementById("busca").value).split(',');
             const $cfop = formatarCFOP(document.getElementById("cfop").value);
             const $valor = document.getElementById("valor").value;
-            const icmsAtualizado = alterarIcms($sped, $campo, $cfop, $valor)
-            document.getElementById("resultado").value = icmsAtualizado;
+            const icmsAtualizado = alterarIcms($sped, $busca, $cfop, $valor)
+            // document.getElementById("resultado").value = icmsAtualizado;
         }
     </script>
 </body>
