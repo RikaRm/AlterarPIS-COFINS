@@ -115,7 +115,7 @@
             input.disabled = true;
         });
 
-        function formatarCFOP(c) {
+        function formatarArray(c) {
             c = c.split(',');
             return c.map((c) => (c.trim()));
         }
@@ -131,11 +131,11 @@
             event.stopPropagation();
             event.preventDefault();
             const $sped = document.getElementById("sped").value;
-            const $busca = (document.getElementById("busca").value).split(',');
-            const $cfop = formatarCFOP(document.getElementById("cfop").value);
+            const $busca = formatarArray(document.getElementById("busca").value);
+            const $cfop = formatarArray(document.getElementById("cfop").value);
             const $valor = document.getElementById("valor").value;
             const icmsAtualizado = alterarIcms($sped, $busca, $cfop, $valor)
-            // document.getElementById("resultado").value = icmsAtualizado;
+            document.getElementById("resultado").value = icmsAtualizado;
         }
     </script>
 </body>
